@@ -1,0 +1,31 @@
+plugins {
+    id 'java'
+}
+
+group = 'app'
+version = '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'com.zaxxer:HikariCP:5.0.1'
+    implementation 'org.slf4j:slf4j-api:2.0.9'
+    implementation 'org.slf4j:slf4j-simple:2.0.9'
+    implementation 'com.h2database:h2:2.2.224'
+
+    implementation('org.apache.spark:spark-core_2.12:3.5.0') {
+        exclude group: 'org.slf4j', module: 'slf4j-log4j12'
+    }
+    implementation('org.apache.spark:spark-sql_2.12:3.5.0') {
+        exclude group: 'org.slf4j', module: 'slf4j-log4j12'
+    }
+
+    testImplementation platform('org.junit:junit-bom:5.9.1')
+    testImplementation 'org.junit.jupiter:junit-jupiter'
+}
+
+test {
+    useJUnitPlatform()
+}

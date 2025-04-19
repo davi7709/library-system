@@ -1,4 +1,4 @@
-package app.domain.genre;
+package app.domain.enums;
 
 public enum Genre {
     FICCAO_CIENTIFICA,
