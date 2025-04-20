@@ -6,6 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import static app.infrastructure.Json.JsonSerializer.fromJson;
+import static app.infrastructure.Json.JsonSerializer.toJson;
 import static spark.Spark.get;
 import static spark.Spark.path;
 import static spark.Spark.post;
@@ -24,6 +25,10 @@ public class BookController {
             post("", (req, res) -> service.saveBook(fromJson(req.body(), Book.class)), JsonSerializer::toJson);
 
             delete("/:isbn",(req, res) -> service.deleteBook(req.params(":isbn")), JsonSerializer::toJson);
+        });
+
+        path("/books", () ->{
+            get("", (req, res) -> service.findAll(), JsonSerializer::toJson);
         });
     }
 }

@@ -21,9 +21,10 @@ public class BookRepository {
             PreparedStatement stmt = conn.prepareStatement(sql)){
 
             stmt.setString(1, book.isbn());
-            stmt.setString(2, book.author());
-            stmt.setString(3, book.description());
-            stmt.setString(4, book.getGenre().toString());
+            stmt.setString(2, book.title());
+            stmt.setString(3, book.author());
+            stmt.setString(4, book.description());
+            stmt.setString(5, book.getGenre().toString());
 
             stmt.executeUpdate();
         }catch (Exception e) {
