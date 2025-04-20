@@ -31,7 +31,6 @@ public class BookRepository {
         }
         return book;
     }
-
     public List<Book> findAll(){
         String sql = "SELECT * FROM tb_book";
         List<Book> books = new ArrayList<>();
@@ -55,8 +54,7 @@ public class BookRepository {
         }
         return books;
     }
-
-    public Optional<Book> findByIsbn(String isbn) {
+    public Book findByIsbn(String isbn) {
         String sql = "SELECT * FROM tb_book WHERE isbn = ?";
 
         try (Connection conn = dataSource.getConnection();
@@ -66,35 +64,32 @@ public class BookRepository {
             ResultSet rs = stmt.executeQuery();
 
             if (rs.next()) {
-                Book book = new Book(
+                return (new Book(
                         rs.getString("isbn"),
                         rs.getString("title"),
                         rs.getString("author"),
                         rs.getString("description"),
                         Genre.valueOf(rs.getString("genre"))
-                );
-                return Optional.of(book);
+                ));
             }
         } catch (Exception e) {
             logger.error(e.getMessage());
         }
-        return Optional.empty();
+        return null;
     }
     public boolean deleteByIsbn(String isbn) {
         String sql = "DELETE FROM tb_book WHERE isbn = ?";
-
+        boolean rowDeleted = false;
         try (Connection conn = dataSource.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
 
             stmt.setString(1, isbn);
-            int affectedRows = stmt.executeUpdate();
-
-            return affectedRows > 0;
+            rowDeleted = stmt.executeUpdate() > 0;
         } catch (Exception e) {
             logger.error(e.getMessage());
         }
 
-        return false;
+        return rowDeleted;
     }
 
 }

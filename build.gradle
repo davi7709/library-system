@@ -14,6 +14,7 @@ dependencies {
     implementation 'org.slf4j:slf4j-api:2.0.9'
     implementation 'org.slf4j:slf4j-simple:2.0.9'
     implementation 'com.h2database:h2:2.2.224'
+    implementation 'com.sparkjava:spark-core:2.9.4'
 
     implementation('org.apache.spark:spark-core_2.12:3.5.0') {
         exclude group: 'org.slf4j', module: 'slf4j-log4j12'

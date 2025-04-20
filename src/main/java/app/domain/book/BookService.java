@@ -12,7 +12,9 @@ public class BookService {
     public List<Book> findAll(){
         return queries.findAll();
     }
-
+    public Book findByIsbn(String isbn){
+        return queries.findByIsbn(isbn);
+    }
     public Book saveBook(Book book) throws IllegalStateException{
         if(queries.findByIsbn(book.isbn()) != null){
             throw new IllegalStateException("Livro ja esta cadastrado");
@@ -20,9 +22,8 @@ public class BookService {
             return queries.save(book);
         }
     }
-
-    public void deleteBook(String isbn){
-        queries.deleteByIsbn(isbn);
+    public boolean deleteBook(String isbn){
+        return queries.deleteByIsbn(isbn);
     }
 
 }
