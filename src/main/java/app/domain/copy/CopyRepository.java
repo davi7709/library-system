@@ -67,15 +67,17 @@ public class CopyRepository {
         }
         return copies;
     }
-    public List<Copy> findAllByBook(Book book) {
+    public List<Copy> findAllByBook(String isbn) {
         List<Copy> copies = new ArrayList<>();
+        Book book = new Book(isbn, null, null, null,null);
+
 
         String sql = "SELECT id, status FROM tb_copy WHERE book_isbn = ?";
 
         try (Connection conn = dataSource.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
 
-            stmt.setString(1, book.getIsbn());
+            stmt.setString(1, isbn);
 
             try (ResultSet rs = stmt.executeQuery()) {
                 while (rs.next()) {

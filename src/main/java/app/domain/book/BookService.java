@@ -1,5 +1,6 @@
 package app.domain.book;
 
+import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -15,7 +16,7 @@ public class BookService {
     public Book findByIsbn(String isbn){
         return queries.findByIsbn(isbn);
     }
-    public Book saveBook(Book book) throws IllegalStateException{
+    public Book saveBook(@NotNull Book book) throws IllegalStateException{
         if(queries.findByIsbn(book.isbn()) != null){
             throw new IllegalStateException("Livro ja esta cadastrado");
         }else{

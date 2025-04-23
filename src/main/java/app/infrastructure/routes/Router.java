@@ -1,6 +1,7 @@
 package app.infrastructure.routes;
 
 import app.domain.book.BookController;
+import app.domain.copy.CopyController;
 import app.infrastructure.util.Message;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,6 +23,8 @@ public class Router {
         path("/api", () -> {
             BookController.handle();
             BookController.handle();
+            CopyController.handle();
+            CopyController.handle();
         });
 
         after((req, res) -> {

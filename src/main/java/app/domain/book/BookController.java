@@ -6,7 +6,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import static app.infrastructure.Json.JsonSerializer.fromJson;
-import static app.infrastructure.Json.JsonSerializer.toJson;
 import static spark.Spark.get;
 import static spark.Spark.path;
 import static spark.Spark.post;
