@@ -8,6 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.List;
+import java.util.Optional;
 
 public class CopyService {
     private final Logger logger = LoggerFactory.getLogger(CopyService.class);
@@ -28,9 +29,11 @@ public class CopyService {
             throw new IllegalArgumentException("Livro associado é obrigatório");
         }
 
-        Book bookExistent = bookRepository.findByIsbn(copy.book().isbn());
-        if (bookExistent == null) {
-            throw new IllegalArgumentException("Livro não encontrado no sistema");
+        Optional<Book> bookExistent = Optional.ofNullable(bookRepository.findByIsbn(copy.book().isbn()));
+
+
+        if (bookExistent.isEmpty()) {
+            throw new IllegalArgumentException("Livro com ISBN " + copy.book().isbn() + " não encontrado no sistema");
         }
         return queries.save(copy);
     }

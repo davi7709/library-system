@@ -19,7 +19,7 @@ public class CopyRepository {
     private final DataSource dataSource = DbConnection.getDataSource();
 
     public Copy save(Copy copy) {
-        String sql = "INSERT INTO tb_copy (book_isbn, status) VALUES (?, ?)";
+        String sql = "INSERT INTO tb_copy (isbn, status) VALUES (?, ?)";
 
         try (Connection conn = dataSource.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -38,7 +38,7 @@ public class CopyRepository {
 
         String sql = "SELECT c.id, c.status, b.isbn, b.title, b.author, b.description, b.genre " +
                 "FROM tb_copy c " +
-                "JOIN tb_book b ON c.book_isbn = b.isbn";
+                "JOIN tb_book b ON c.isbn = b.isbn";
 
         try (Connection conn = dataSource.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql);
@@ -72,7 +72,7 @@ public class CopyRepository {
         Book book = new Book(isbn, null, null, null,null);
 
 
-        String sql = "SELECT id, status FROM tb_copy WHERE book_isbn = ?";
+        String sql = "SELECT id, status FROM tb_copy WHERE isbn = ?";
 
         try (Connection conn = dataSource.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -98,7 +98,7 @@ public class CopyRepository {
 
     public List<Copy> findAllByStatus(Status status) {
         List<Copy> copies = new ArrayList<>();
-        String sql = "SELECT * FROM tb_copy c JOIN tb_book b ON c.book_isbn = b.isbn WHERE c.status = ?";
+        String sql = "SELECT * FROM tb_copy c JOIN tb_book b ON c.isbn = b.isbn WHERE c.status = ?";
 
         try (Connection conn = dataSource.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
