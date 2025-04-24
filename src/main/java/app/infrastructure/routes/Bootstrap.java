@@ -8,7 +8,7 @@ public class Bootstrap {
     private static final Logger logger = LoggerFactory.getLogger(Bootstrap.class);
 
     public static void boot(){
-        Spark.port(4567);
+        Spark.port(8080);
         Spark.threadPool(Runtime.getRuntime().availableProcessors());
         Router.route();
         Spark.awaitInitialization();

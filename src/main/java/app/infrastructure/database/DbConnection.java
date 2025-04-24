@@ -17,46 +17,87 @@ public class DbConnection {
 
     private DbConnection() {
         var config = new HikariConfig();
-        config.setJdbcUrl("jdbc:h2:mem:test");
-        config.setUsername("library");
-        config.setPassword("library");
+        config.setJdbcUrl("jdbc:postgresql://localhost:5432/library");
+        config.setUsername("Davi Alves");
+        config.setPassword("1708Davi");
+        // H2 (teste):
+        // config.setJdbcUrl("jdbc:h2:mem:test");
+        // config.setUsername("library");
+        // config.setPassword("library");
         config.setAutoCommit(true);
         dataSource = new HikariDataSource(config);
 
-        try (Connection connection = dataSource.getConnection()) {
+        try(Connection connection = dataSource.getConnection()) {
             try (Statement statement = connection.createStatement()) {
-                if (connection.getMetaData().getDatabaseProductName().equals("H2")) {
+                String dbName = connection.getMetaData().getDatabaseProductName();
+
+                if (dbName.equalsIgnoreCase("H2")) {
                     statement.execute(
                             """
                                     CREATE TABLE IF NOT EXISTS tb_book (
-                                      isbn CHAR(13) NOT NULL PRIMARY KEY,
-                                      title varchar(255) NOT NULL,
-                                      author varchar(255) NOT NULL,
-                                      description varchar(255) NOT NULL,
-                                      genre varchar (50) NOT NULL
+                                        isbn CHAR(13) NOT NULL PRIMARY KEY,
+                                        title varchar(255) NOT NULL,
+                                        author varchar(255) NOT NULL,
+                                        description varchar(255) NOT NULL,
+                                        genre varchar(50) NOT NULL
                                     );
-                                                
+
                                     CREATE TABLE IF NOT EXISTS tb_copy (
-                                      id BIGINT NOT NULL PRIMARY KEY AUTO_INCREMENT,
-                                      isbn CHAR(13) NOT NULL,
-                                      status VARCHAR(50) NOT NULL,
-                                      FOREIGN KEY (isbn) REFERENCES tb_book(isbn)
+                                        id BIGINT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+                                        isbn CHAR(13) NOT NULL,
+                                        status VARCHAR(50) NOT NULL,
+                                        FOREIGN KEY (isbn) REFERENCES tb_book(isbn)
                                     );
-                                                
-                                    //truncate table tb_book;
-                                    //truncate table tb_copy;
-                                                
-                                    //INSERT INTO tb_book(isbn, title, author, description, genre) values ('9788552100911', 'Meditacoes', 'Marco Aurelio', 'Diario do imperador Marco Aurelio', 'BIOGRAFIA');
-                                    //INSERT INTO tb_copy(isbn, status) values ('9788552100911', 'DISPONIVEL');
+
+                                    CREATE TABLE IF NOT EXISTS tb_loan (
+                                        id BIGINT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+                                        copy_id BIGINT NOT NULL,
+                                        loan_date DATE NOT NULL,
+                                        due_date DATE NOT NULL,
+                                        return_date DATE,
+                                        status VARCHAR(20) NOT NULL,
+                                        FOREIGN KEY (copy_id) REFERENCES tb_copy(id)
+                                    );
+                                    """
+                    );
+                } else if (dbName.equalsIgnoreCase("PostgreSQL")) {
+                    statement.execute(
+                            """
+                                    CREATE TABLE IF NOT EXISTS tb_book (
+                                        isbn CHAR(13) NOT NULL PRIMARY KEY,
+                                        title VARCHAR(255) NOT NULL,
+                                        author VARCHAR(255) NOT NULL,
+                                        description VARCHAR(255) NOT NULL,
+                                        genre VARCHAR(50) NOT NULL
+                                    );
+
+                                    CREATE TABLE IF NOT EXISTS tb_copy (
+                                        id BIGSERIAL PRIMARY KEY,
+                                        isbn CHAR(13) NOT NULL,
+                                        status VARCHAR(50) NOT NULL,
+                                        FOREIGN KEY (isbn) REFERENCES tb_book(isbn)
+                                    );
+
+                                    CREATE TABLE IF NOT EXISTS tb_loan (
+                                        id BIGSERIAL PRIMARY KEY,
+                                        copy_id BIGINT NOT NULL,
+                                        loan_date DATE NOT NULL,
+                                        due_date DATE NOT NULL,
+                                        return_date DATE,
+                                        status VARCHAR(20) NOT NULL,
+                                        FOREIGN KEY (copy_id) REFERENCES tb_copy(id)
+                                    );
                                     """
                     );
                 }
             }
-        } catch (
-                SQLException e) {
+        }
+        catch (Exception e) {
             logger.error(e.getMessage());
         }
+
     }
+
     private static synchronized DbConnection instance() {
         if (instance == null) {
             instance = new DbConnection();
