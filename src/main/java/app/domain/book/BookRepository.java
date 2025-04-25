@@ -17,7 +17,7 @@ public class BookRepository {
     public Book save(Book book){
         String sql = "INSERT INTO tb_book (isbn, title, author, description, genre) VALUES (?, ?, ?, ?, ?)";
 
-        try(Connection conn = DbConnection.getDataSource().getConnection();
+        try(Connection conn = dataSource.getConnection();
             PreparedStatement stmt = conn.prepareStatement(sql)){
 
             stmt.setString(1, book.isbn());
@@ -36,7 +36,7 @@ public class BookRepository {
         String sql = "SELECT * FROM tb_book";
         List<Book> books = new ArrayList<>();
 
-        try(Connection conn = DbConnection.getDataSource().getConnection();
+        try(Connection conn =dataSource.getConnection();
             Statement stmt = conn.createStatement();
             ResultSet rs = stmt.executeQuery(sql)){
 
