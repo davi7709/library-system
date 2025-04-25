@@ -7,4 +7,6 @@ public record Copy (Long id, Book book, Status status){
     public String getIsbn() {
         return book.getIsbn();
     }
+
+    public Long getCopyId(){return id;}
 }
