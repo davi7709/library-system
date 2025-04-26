@@ -168,4 +168,30 @@ public class LoanRepository {
             throw new RuntimeException("Erro ao devolver empréstimo", e);
         }
     }
+    public void update(Loan loan) {
+        String sql = """
+        UPDATE tb_loan 
+        SET 
+            loan_date = ?, 
+            due_date = ?, 
+            return_date = ?, 
+            status = ?
+        WHERE id = ?
+    """;
+
+        try (Connection conn = DbConnection.getDataSource().getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setDate(1, Date.valueOf(loan.loanDate()));
+            stmt.setDate(2, Date.valueOf(loan.dueDate()));
+            stmt.setDate(3, loan.returnDate() != null ? Date.valueOf(loan.returnDate()) : null);
+            stmt.setString(4, loan.status().name());
+            stmt.setLong(5, loan.id());
+
+            stmt.executeUpdate();
+        } catch (Exception e) {
+            throw new RuntimeException("Erro ao atualizar o empréstimo", e);
+        }
+    }
+
 }
