@@ -11,8 +11,8 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class BookRepository {
-    private final Logger logger = LoggerFactory.getLogger(Book.class);
+public class BookRepository implements IBookRepository{
+    private final Logger logger = LoggerFactory.getLogger(BookRepository.class);
     private final DataSource dataSource = DbConnection.getDataSource();
     public Book save(Book book){
         String sql = "INSERT INTO tb_book (isbn, title, author, description, genre) VALUES (?, ?, ?, ?, ?)";
