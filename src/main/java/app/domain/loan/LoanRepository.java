@@ -17,7 +17,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-public class LoanRepository {
+public class LoanRepository implements ILoanRepository{
     private final Logger logger = LoggerFactory.getLogger(LoanRepository.class);
     private final DataSource dataSource = DbConnection.getDataSource();
 
@@ -160,7 +160,7 @@ public class LoanRepository {
 
             int updated = stmt.executeUpdate();
             if (updated == 0) {
-                throw new RuntimeException("Empréstimo com ID " + id + " não encontrado.");
+                throw new RuntimeException(STR."Empréstimo com ID \{id} não encontrado.");
             }
 
         } catch (Exception e) {
@@ -170,11 +170,11 @@ public class LoanRepository {
     }
     public void update(Loan loan) {
         String sql = """
-        UPDATE tb_loan 
-        SET 
-            loan_date = ?, 
-            due_date = ?, 
-            return_date = ?, 
+        UPDATE tb_loan
+        SET
+            loan_date = ?,
+            due_date = ?,
+            return_date = ?,
             status = ?
         WHERE id = ?
     """;

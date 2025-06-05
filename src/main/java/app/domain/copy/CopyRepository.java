@@ -14,7 +14,7 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CopyRepository {
+public class CopyRepository implements ICopyRepository{
     private final Logger logger = LoggerFactory.getLogger(CopyRepository.class);
     private final DataSource dataSource = DbConnection.getDataSource();
 

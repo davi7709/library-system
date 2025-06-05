@@ -33,10 +33,11 @@ public class BookRepository implements IBookRepository{
         return book;
     }
     public List<Book> findAll(){
+        //trocar o * para os atributos
         String sql = "SELECT * FROM tb_book";
         List<Book> books = new ArrayList<>();
 
-        try(Connection conn =dataSource.getConnection();
+        try(Connection conn = dataSource.getConnection();
             Statement stmt = conn.createStatement();
             ResultSet rs = stmt.executeQuery(sql)){
 

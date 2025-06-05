@@ -17,6 +17,7 @@ dependencies {
     implementation 'com.h2database:h2:2.2.224'
     implementation 'com.sparkjava:spark-core:2.9.4'
 
+
     implementation('org.apache.spark:spark-core_2.12:3.5.0') {
         exclude group: 'org.slf4j', module: 'slf4j-log4j12'
     }
@@ -24,9 +25,11 @@ dependencies {
         exclude group: 'org.slf4j', module: 'slf4j-log4j12'
     }
 
-    testImplementation platform('org.junit:junit-bom:5.9.1')
+    testImplementation platform('org.junit:junit-bom:5.10.0')
     testImplementation 'org.junit.jupiter:junit-jupiter'
 }
+
+
 
 test {
     useJUnitPlatform()
